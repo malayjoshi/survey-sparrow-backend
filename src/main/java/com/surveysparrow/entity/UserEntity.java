@@ -1,10 +1,15 @@
 package com.surveysparrow.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +27,19 @@ public class UserEntity {
 	@Column(name="email")
 	private String email;
 	
+	@OneToMany(mappedBy="user",fetch=FetchType.EAGER,cascade = CascadeType.ALL)
+	private List<UrlEntity> urls;
+	
+	
+	
+	public List<UrlEntity> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(List<UrlEntity> urls) {
+		this.urls = urls;
+	}
+
 	public String getEmail() {
 		return email;
 	}
