@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.surveysparrow.dto.PingResponseDTO;
 import com.surveysparrow.dto.UrlDTO;
 import com.surveysparrow.services.PingService;
 
@@ -22,10 +23,9 @@ public class PingPageController {
 	@PostMapping(value="/api/ping/{urlId}")
 	public ResponseEntity<?> pingUrl(@PathVariable Integer urlId) throws Exception{
 		
-		boolean withinResponseTime=pingService.pingUrl(urlId);
-		String message="{\"withinResponseTime\":"+withinResponseTime+"}";
-		return new ResponseEntity<String>(
-				message,new HttpHeaders(),HttpStatus.OK
+		PingResponseDTO dto=pingService.pingUrl(urlId);
+		return new ResponseEntity<PingResponseDTO>(
+				dto,new HttpHeaders(),HttpStatus.OK
 				);
 	
 	}

@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.surveysparrow.dto.PingResponseDTO;
 import com.surveysparrow.dto.UrlDTO;
 import com.surveysparrow.entity.LogEntity;
 import com.surveysparrow.entity.UrlEntity;
@@ -26,8 +27,10 @@ public class PingService {
 	@Autowired
 	private ModelMapper mapper;
 
-	public boolean pingUrl(Integer urlId) throws Exception{
-		boolean result=false;
+	public PingResponseDTO pingUrl(Integer urlId) throws Exception{
+		
+		PingResponseDTO dto=new PingResponseDTO();
+		dto.setWithinResponseTime(false);
 		
 		UrlEntity url=urlsDAO.findById(urlId).get();
 		
@@ -41,19 +44,27 @@ public class PingService {
  
             int code = con.getResponseCode();
             if (code == 200) {
-                result = true;
+            	
+                dto.setWithinResponseTime(true);
+                dto.setTime(new Date());
+            
             }
         } catch (Exception e) {
             //log it
         	LogEntity log=new LogEntity();
         	//log.setMessage(e.getMessage());
         	log.setMessage("Your URL has taken more than "+url.getResponseTime()+"ms to respond");
-        	log.setTime(new Date());
+        	
+        	Date time=new Date();
+        	
+        	log.setTime(time);
+        	dto.setTime(time);
+        	
         	log.setUrl(url);
         	logsDAO.save(log);
         }
 		
-		return result;
+		return dto;
 	}
 
 	public UrlDTO fetchUrl(Integer urlId) {
