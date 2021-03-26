@@ -12,7 +12,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     
     @Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://localhost:3000").
+		registry.addMapping("/**").allowedOrigins("https://survey-sparrow-frontend-ipbm2.ondigitalocean.app").
 		allowCredentials(true).allowedMethods("*");
 	
 		
